@@ -17,14 +17,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Button"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/layout"

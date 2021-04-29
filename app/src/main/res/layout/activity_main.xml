@@ -20,12 +20,6 @@
             android:capitalize="none"/>
 
         <Button
-            android:id="@+id/relative_layout_demo_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Relative Layout Demo" />
-
-        <Button
             android:id="@+id/frame_layout_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

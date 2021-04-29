@@ -16,7 +16,6 @@ import android.widget.Toast
 import com.example.movinglayout.databinding.ActivityMainBinding
 import com.example.movinglayout.ui.framelayoutdemo.FrameLayoutActivity
 import com.example.movinglayout.ui.recyclerviewlayout.RecyclerViewLayoutActivity
-import com.example.movinglayout.ui.relativelayoutdemo.RelativeLayoutActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,11 +29,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.recyclerViewDemoBtn.setOnClickListener {
             val intent = Intent(this, RecyclerViewLayoutActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.relativeLayoutDemoBtn.setOnClickListener {
-            val intent = Intent(this, RelativeLayoutActivity::class.java)
             startActivity(intent)
         }
 
