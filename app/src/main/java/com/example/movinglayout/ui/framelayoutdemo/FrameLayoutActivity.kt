@@ -5,6 +5,7 @@ import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.example.movinglayout.data.tableList
 import com.example.movinglayout.databinding.ActivityFrameLayoutBinding
 import com.example.movinglayout.model.Table
 import kotlinx.android.synthetic.main.activity_frame_layout.*
+import kotlinx.android.synthetic.main.table_card_item.view.*
 import timber.log.Timber
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -28,19 +30,17 @@ class FrameLayoutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFrameLayoutBinding
 
-    //lấy resource
-    private lateinit var resource: Resources
-
     //đống kích thước để tính toán
     var density: Float = 0f
-    var maxXpx: Int = 0
-    var maxYpx: Int = 0
-    var maxXdp: Float = 0f
-    var maxYdp: Float = 0f
-    var marginXpx = 0
-    var marginYpx = 0
-    var marginXdp = 0f
-    var marginYdp = 0f
+    var widthPx: Int = 0
+    var heightPx: Int = 0
+    var widthDp: Float = 0f
+    var heightDp: Float = 0f
+    var columnNums: Int = 1
+    var columnWidthPx: Float = 0f
+    var columnHeightPx: Float = 0f
+    var columnWidthDp: Float = 0f
+    var columnHeightDp: Float = 0f
     var layoutXpx = 0
     var layoutYpx = 0
     var layoutMarginXpx = 0
@@ -50,8 +50,9 @@ class FrameLayoutActivity : AppCompatActivity() {
     companion object {
         private const val INVALID_POINTER_ID = -1
     }
+
     private var activePointerId = INVALID_POINTER_ID
-    private var prevX  = 0f
+    private var prevX = 0f
     private var prevY = 0f
 
 
@@ -70,11 +71,10 @@ class FrameLayoutActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
 
-        resource = Resources.getSystem()
+        initMeasurement()
 
         layout.apply {
             post {
-                initMeasurement()
                 layoutXpx = this.width
                 layoutYpx = this.height
                 layoutMarginXpx = layoutXpx / 10
@@ -125,48 +125,88 @@ class FrameLayoutActivity : AppCompatActivity() {
     }
 
     private fun initMeasurement() {
-        density = resource.displayMetrics.density
+        density = resources.displayMetrics.density
 
-        maxXpx = resource.displayMetrics.widthPixels
-        maxYpx = resource.displayMetrics.heightPixels
+        widthPx = resources.displayMetrics.widthPixels
+        heightPx = resources.displayMetrics.heightPixels
 
-        maxXdp = maxXpx / density
-        maxYdp = maxYpx / density
+        widthDp = widthPx / density
+        heightDp = heightPx / density
 
-        marginXpx = maxXpx / 10
-        marginYpx = maxYpx / 10
-        marginXdp = maxXdp / 10
-        marginYdp = maxYdp / 10
+        columnWidthPx = resources.getDimension(R.dimen.item_table_width)
+        columnHeightPx = resources.getDimension(R.dimen.item_table_height)
+
+        columnNums = floor(widthPx / columnWidthPx).toInt()
+
+
     }
 
+    // simple textView
+//    private fun FrameLayout.initItemsToGridFirstTime() {
+//        var blockX = 0
+//        var blockY = 0
+//
+//        for (table in tableList) {
+//            val pos = getMarginBlock(blockX, blockY)
+//            val view = TextView(context)
+//            this.addView(view.drawViewToAdd(table, blockX, blockY))
+//            table.coorX = pos[0]
+//            table.coorY = pos[1]
+//            Timber.i("${table.name} = ($blockX, $blockY)")
+//            if (blockX >= layoutMarginXpx * 9) {
+//                blockX = 0
+//                blockY += layoutMarginYpx
+//            } else {
+//                blockX += layoutMarginXpx
+//            }
+//        }
+//    }
+//
+//    private fun FrameLayout.initItemsToGrid() {
+//        for (table in tableList) {
+//            val view = TextView(context)
+//            this.addView(
+//                view.drawViewToAdd(
+//                    table,
+//                    table.coorX * this.width / 10,
+//                    table.coorY * this.height / 10
+//                )
+//            )
+//        }
+//    }
+
+    //inflating layout
+    @SuppressLint("InflateParams")
     private fun FrameLayout.initItemsToGridFirstTime() {
         var blockX = 0
         var blockY = 0
 
         for (table in tableList) {
             val pos = getMarginBlock(blockX, blockY)
-            val view = TextView(context)
-            this.addView(view.drawViewToAdd(table, blockX, blockY))
+            val lInflater = LayoutInflater.from(context)
+            val layout = lInflater.inflate(R.layout.table_card_item, null)
+            this.addView(layout.populateViewInfo(table, blockX, blockY))
             table.coorX = pos[0]
             table.coorY = pos[1]
             Timber.i("${table.name} = ($blockX, $blockY)")
-            if (blockX >= layoutMarginXpx * 9) {
+            if (blockX >= columnWidthPx * columnNums) {
                 blockX = 0
-                blockY += layoutMarginYpx
+                blockY += columnHeightPx.toInt()
             } else {
-                blockX += layoutMarginXpx
+                blockX += columnWidthPx.toInt()
             }
         }
     }
 
     private fun FrameLayout.initItemsToGrid() {
         for (table in tableList) {
-            val view = TextView(context)
+            val lInflater = LayoutInflater.from(context)
+            val layout = lInflater.inflate(R.layout.table_card_item, null)
             this.addView(
-                view.drawViewToAdd(
+                layout.populateViewInfo(
                     table,
-                    table.coorX * this.width / 10,
-                    table.coorY * this.height / 10
+                    table.coorX * columnWidthPx.toInt(),
+                    table.coorY * columnHeightPx.toInt()
                 )
             )
         }
@@ -174,8 +214,8 @@ class FrameLayoutActivity : AppCompatActivity() {
 
     private fun getMarginBlock(x: Int, y: Int): IntArray =
         intArrayOf(
-            floor(x.toDouble() / layoutMarginXpx).toInt(),
-            floor(y.toDouble() / layoutMarginYpx).toInt()
+            floor(x.toDouble() / columnWidthPx).toInt(),
+            floor(y.toDouble() / columnHeightPx).toInt()
         )
 
     private fun createLayoutParams(x: Int, y: Int): FrameLayout.LayoutParams {
@@ -186,6 +226,63 @@ class FrameLayoutActivity : AppCompatActivity() {
         params.leftMargin = x
         params.topMargin = y
         return params
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun View.populateViewInfo(table: Table, x: Int, y: Int): View {
+        this.cardTableName.apply {
+            text = table.name
+            isSelected = true
+        }
+        this.cardTableId.apply {
+            text = table.id.toString()
+            isSelected = true
+        }
+        this.layoutParams = createLayoutParams(x, y)
+        this.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    prevX = event.x
+                    prevY = event.y
+
+                    activePointerId = event.getPointerId(0)
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    //tìm index của pointer đang hoạt động và lấy vị trí
+                    val pointerIndex = event.findPointerIndex(activePointerId)
+                    if (pointerIndex != -1) {
+                        val currX = event.getX(pointerIndex)
+                        val currY = event.getY(pointerIndex)
+
+                        //di chuyển
+                        applyTranslation(v, currX - prevX, currY - prevY)
+                    }
+                }
+                MotionEvent.ACTION_UP -> {
+                    val postPos = getMarginBlock(
+                        floor(v.x + v.width / 2).toInt(),
+                        floor(v.y + v.height / 2).toInt()
+                    )
+                    Timber.i("x = ${postPos[0]}, y = ${postPos[1]}")
+                    if (postPos[0] < 0) postPos[0] = 0
+                    if (postPos[0] > columnNums) postPos[0] = columnNums
+                    if (postPos[1] < 0) postPos[1] = 0
+                    v.x = postPos[0] * columnWidthPx
+                    v.y = postPos[1] * columnHeightPx
+                    if (table.coorX == postPos[0] && table.coorY == postPos[1]) {
+                        Toast.makeText(context, "This is table ${table.name}", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        table.coorX = postPos[0]
+                        table.coorY = postPos[1]
+                    }
+                    Timber.i("${v.x}, ${v.y}")
+                    activePointerId = INVALID_POINTER_ID
+                }
+            }
+            true
+        }
+        return this
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -225,7 +322,8 @@ class FrameLayoutActivity : AppCompatActivity() {
                     v.x = postPos[0] * layoutMarginXpx.toFloat()
                     v.y = postPos[1] * layoutMarginYpx.toFloat()
                     if (table.coorX == postPos[0] && table.coorY == postPos[1]) {
-                        Toast.makeText(context, "This is table ${table.name}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "This is table ${table.name}", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         table.coorX = postPos[0]
                         table.coorY = postPos[1]
@@ -243,14 +341,15 @@ class FrameLayoutActivity : AppCompatActivity() {
         Timber.i(
             """
             density = $density
-            maxXpx = $maxXpx
-            maxYpx = $maxYpx
-            maxXdp = $maxXdp
-            maxYdp = $maxYdp
-            marginXpx = $marginXpx
-            marginYpx = $marginYpx
-            marginXdp = $marginXdp
-            marginYdp = $marginYdp
+            widthPx = $widthPx
+            heightPx = $heightPx
+            widthDp = $widthDp
+            heightDp = $heightDp
+            columnNums = $columnNums
+            columnWidthPx = $columnWidthPx
+            columnHeightPx = $columnHeightPx
+            columnWidthDp = $columnWidthDp
+            columnHeightDp = $columnHeightDp
             layoutX = $layoutXpx
             layoutY = $layoutYpx
             layoutMarginXpx = $layoutMarginXpx
@@ -261,7 +360,7 @@ class FrameLayoutActivity : AppCompatActivity() {
     }
 
     fun dpToPx(x: Float) =
-        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, resource.displayMetrics)
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, x, resources.displayMetrics)
             .roundToInt()
 
 
