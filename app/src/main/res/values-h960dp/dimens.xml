@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="layout_width">1620dp</dimen>
+    <dimen name="layout_height">1300dp</dimen>
+
     <dimen name="item_table_width">152dp</dimen>
     <dimen name="item_table_height">120dp</dimen>
+
+    <dimen name="item_space_width">162dp</dimen>
+    <dimen name="item_space_height">130dp</dimen>
+
+    <dimen name="floor_layout_width">1500dp</dimen>
 </resources>

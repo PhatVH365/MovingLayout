@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MovingLayout">
-        <activity android:name=".ui.framelayoutdemo.FrameLayoutActivity"></activity>
+        <activity android:name=".ui.floorlayout.FloorLayoutActivity"></activity>
+        <activity android:name=".ui.framelayoutdemo.FrameLayoutActivity" />
         <activity android:name=".ui.relativelayoutdemo.RelativeLayoutActivity" />
         <activity android:name=".ui.recyclerviewlayout.RecyclerViewLayoutActivity" />
         <activity android:name=".ui.MainActivity">

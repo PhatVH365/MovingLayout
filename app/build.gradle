@@ -56,4 +56,8 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     //Timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //rxjava
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
 }

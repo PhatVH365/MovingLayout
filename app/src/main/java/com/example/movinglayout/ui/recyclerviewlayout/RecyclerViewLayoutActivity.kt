@@ -17,6 +17,7 @@ import com.example.movinglayout.model.Table
 import com.example.movinglayout.ui.recyclerview.ItemListener
 import com.example.movinglayout.ui.recyclerview.MyDragShadowBuilder
 import com.example.movinglayout.ui.recyclerview.TableRecyclerAdapter
+import kotlinx.android.synthetic.main.activity_recycler_view_layout.*
 import timber.log.Timber
 
 class RecyclerViewLayoutActivity : AppCompatActivity() {
@@ -24,64 +25,33 @@ class RecyclerViewLayoutActivity : AppCompatActivity() {
 //    v.y = e.rawY - v.height / 2
 //    v.x = e.rawX - v.width / 2
 
-    lateinit var binding: ActivityRecyclerViewLayoutBinding
     lateinit var adapter: TableRecyclerAdapter
-    private var isMoveMode = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRecyclerViewLayoutBinding.inflate(layoutInflater)
         supportActionBar!!.hide()
-        setContentView(binding.root)
+        setContentView(R.layout.activity_recycler_view_layout)
 
-        val layoutManager = GridLayoutManager(this, 3)
+        val layoutManager = CustomLayoutManager(this, 3)
 
-        adapter = returnAdapter(isMoveMode)
+        adapter = TableRecyclerAdapter(
+            ItemListener(
+                {},
+                { _, _ ->
+                    false
+                },
+                { v, e, t ->
+                    if(e.action == MotionEvent.ACTION_MOVE) {
+                        v.y = e.rawY - v.height
+                        v.x = e.rawX - v.width / 2
+                    }
+                    true
+                })
+        )
 
         adapter.submitList(tableList)
 
-        binding.tableList.adapter = adapter
-        binding.tableList.layoutManager = layoutManager
-
-        binding.editBtn.setOnClickListener {
-            isMoveMode = when(isMoveMode) {
-                true -> false
-                false -> true
-            }
-            Timber.i("Set edit to $isMoveMode")
-            binding.tableList.adapter = returnAdapter(isMoveMode)
-        }
-    }
-
-    private fun returnAdapter(isMoveMode: Boolean): TableRecyclerAdapter {
-        return if (isMoveMode) {
-            TableRecyclerAdapter(
-                ItemListener(
-                    {},
-                    { _, _ ->
-                        false
-                    },
-                    { v, e, t ->
-                        if(e.action == MotionEvent.ACTION_MOVE) {
-                            v.y = e.rawY - v.height
-                            v.x = e.rawX - v.width / 2
-                        }
-                        true
-                    })
-            )
-        } else {
-            TableRecyclerAdapter(
-                ItemListener(
-                    { t ->
-                        Toast.makeText(this, t.name, Toast.LENGTH_SHORT).show()
-                    },
-                    { _, _ ->
-                        false
-                    },
-                    { _, _, _ ->
-                        false
-                    })
-            )
-        }
+        tableRecyclerList.adapter = adapter
+        tableRecyclerList.layoutManager = layoutManager
     }
 }

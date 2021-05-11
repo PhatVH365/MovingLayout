@@ -69,7 +69,7 @@ class RecyclerViewFragment : Fragment() {
         )
         adapter.submitList(tableList)
 
-        binding.tableList.adapter = adapter
+        binding.tableRecyclerList.adapter = adapter
 
         return binding.root
     }

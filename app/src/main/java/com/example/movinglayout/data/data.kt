@@ -3,7 +3,7 @@ package com.example.movinglayout.data
 import com.example.movinglayout.model.Table
 
 
-val tableList = listOf<Table>(
+val tableList = mutableListOf<Table>(
     Table("abxc", 1),
     Table("Posdk", 2),
     Table("365", 3),
@@ -19,6 +19,3 @@ val tableList = listOf<Table>(
     Table("misfit", 13),
     Table("pspsps", 14)
 )
-
-class data {
-}

@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.movinglayout.databinding.ActivityMainBinding
+import com.example.movinglayout.ui.floorlayout.FloorLayoutActivity
 import com.example.movinglayout.ui.framelayoutdemo.FrameLayoutActivity
 import com.example.movinglayout.ui.recyclerviewlayout.RecyclerViewLayoutActivity
 
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.frameLayoutBtn.setOnClickListener {
             val intent = Intent(this, FrameLayoutActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.floorLayoutBtn.setOnClickListener {
+            val intent = Intent(this, FloorLayoutActivity::class.java)
             startActivity(intent)
         }
     }
