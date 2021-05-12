@@ -24,9 +24,9 @@ class ViewHolder constructor(val binding: TableItemViewBinding) :
         binding.tableName.text = item.name
         binding.tableId.text = item.id.toString()
         binding.tableName.isSelected = true
-        binding.layout.setOnClickListener { clickListener(item) }
-        binding.layout.setOnLongClickListener { v -> longClickListener(v, item) }
-        binding.layout.setOnTouchListener { v, event -> touchListener(v, event, item) }
+        binding.outerLayout.setOnClickListener { clickListener(item) }
+        binding.outerLayout.setOnLongClickListener { v -> longClickListener(v, item) }
+        binding.outerLayout.setOnTouchListener { v, event -> touchListener(v, event, item) }
     }
 
     companion object {

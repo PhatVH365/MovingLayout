@@ -29,7 +29,7 @@
             app:layout_constraintVertical_bias="0.0">
 
             <FrameLayout
-                android:id="@+id/layout"
+                android:id="@+id/outerLayout"
                 android:layout_width="@dimen/layout_width"
                 android:layout_height="@dimen/layout_height"
                 android:background="@drawable/item_view_bg"

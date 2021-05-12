@@ -8,8 +8,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTable"
         style="@style/Theme.MaterialComponents.Light"
-        android:layout_width="@dimen/item_table_width"
-        android:layout_height="@dimen/item_table_height"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:cardBackgroundColor="@color/cardview_light_background"
         app:cardCornerRadius="8dp">
 

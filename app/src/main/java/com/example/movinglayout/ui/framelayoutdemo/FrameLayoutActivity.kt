@@ -15,7 +15,7 @@ import com.example.movinglayout.custom.MultiTouchListener
 import com.example.movinglayout.data.tableList
 import com.example.movinglayout.model.Table
 import kotlinx.android.synthetic.main.activity_frame_layout.*
-import kotlinx.android.synthetic.main.activity_frame_layout.layout
+import kotlinx.android.synthetic.main.activity_frame_layout.outerLayout
 import kotlinx.android.synthetic.main.activity_frame_layout.view.*
 import kotlinx.android.synthetic.main.table_card_item.view.*
 import timber.log.Timber
@@ -68,7 +68,7 @@ class FrameLayoutActivity : AppCompatActivity() {
         val touchListener = MultiTouchListener()
         touchListener.isRotateEnabled = false
 
-        layout.apply {
+        outerLayout.apply {
             post {
                 if (!isInitiated) {
                     initItemsToGridFirstTime(this)
@@ -88,28 +88,28 @@ class FrameLayoutActivity : AppCompatActivity() {
         }
 
         coorBtn.setOnClickListener {
-            Timber.i("coordinate = (${layout.x}, ${layout.y})")
+            Timber.i("coordinate = (${outerLayout.x}, ${outerLayout.y})")
         }
 
         pivotBtn.setOnClickListener {
-            Timber.i("pivot = (${layout.pivotX}, ${layout.pivotY})")
+            Timber.i("pivot = (${outerLayout.pivotX}, ${outerLayout.pivotY})")
         }
 
         resetPivotBtn.setOnClickListener {
-            layout.pivotX = 0f
-            layout.pivotY = 0f
-            Timber.i("new pivot = (${layout.pivotX}, ${layout.pivotY})")
+            outerLayout.pivotX = 0f
+            outerLayout.pivotY = 0f
+            Timber.i("new pivot = (${outerLayout.pivotX}, ${outerLayout.pivotY})")
         }
 
         resetPosBtn.setOnClickListener {
-            layout.pivotX = 0f
-            layout.pivotY = 0f
-            layout.x = 0f
-            layout.y = 0f
+            outerLayout.pivotX = 0f
+            outerLayout.pivotY = 0f
+            outerLayout.x = 0f
+            outerLayout.y = 0f
         }
 
         sizeBtn.setOnClickListener {
-            Timber.i("size = (${layout.width}, ${layout.height})")
+            Timber.i("size = (${outerLayout.width}, ${outerLayout.height})")
         }
     }
 
