@@ -28,19 +28,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerViewDemoBtn.setOnClickListener {
-            val intent = Intent(this, RecyclerViewLayoutActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.frameLayoutBtn.setOnClickListener {
-            val intent = Intent(this, FrameLayoutActivity::class.java)
-            startActivity(intent)
-        }
-
-        binding.floorLayoutBtn.setOnClickListener {
-            val intent = Intent(this, FloorLayoutActivity::class.java)
-            startActivity(intent)
-        }
+        val intent = Intent(this, FloorLayoutActivity::class.java)
+        startActivity(intent)
     }
 }
